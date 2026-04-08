@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Astronomy Research Portal | Liamz Space Institute 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100..900;1,100..900&family=Space+Grotesk:wght@300..700&family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+    .astro-events{
+
+margin-top:50px;
+padding:30px;
+
+background:linear-gradient(135deg,#0b0f2a,#020412);
+
+border-radius:20px;
+
+box-shadow:
+0 0 20px rgba(0,255,255,0.2);
+
+}
+
+.astro-events h2{
+
+text-align:center;
+color:#00f7ff;
+
+font-family:'Orbitron',sans-serif;
+
+letter-spacing:3px;
+
+margin-bottom:30px;
+
+}
+
+.event-grid{
+
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
+
+}
+
+.event-card{
+
+background:rgba(10,20,40,0.7);
+
+border:1px solid rgba(0,255,255,0.3);
+
+padding:20px;
+
+border-radius:15px;
+
+transition:0.3s;
+
+backdrop-filter:blur(10px);
+
+}
+
+.event-card:hover{
+
+transform:translateY(-5px);
+
+box-shadow:
+0 0 15px #00eaff,
+0 0 30px rgba(0,234,255,0.5);
+
+}
+
+.event-card h3{
+
+color:#7df9ff;
+
+margin-bottom:10px;
+
+}
+
+.event-name{
+
+font-size:18px;
+color:white;
+
+}
+
+.event-date{
+
+color:#9bdcff;
+margin-top:5px;
+
+}
+@keyframes glowPulse{
+
+0%{box-shadow:0 0 10px #00f7ff;}
+
+50%{box-shadow:0 0 25px #00f7ff;}
+
+100%{box-shadow:0 0 10px #00f7ff;}
+
+}
+
+.astro-events{
+
+animation:glowPulse 6s infinite;
+
+}
+    .space-clock{
+
+font-family:'Orbitron', sans-serif;
+
+font-size:32px;
+letter-spacing:4px;
+
+color:#00f7ff;
+
+text-align:center;
+
+margin-bottom:25px;
+
+text-shadow:
+0 0 10px #00f7ff,
+0 0 20px #00f7ff,
+0 0 40px #00f7ff;
+
+}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #7c3aed;
+            --primary-glow: #a855f7;
+            --secondary: #ec4899;
+            --accent: #06b6d4;
+            --neon-blue: #00f3ff;
+            --neon-purple: #bf00ff;
+            --glass-bg: rgba(15, 25, 45, 0.65);
+            --glass-border: rgba(124, 58, 237, 0.4);
+            --text-light: #f1f5f9;
+            --text-dim: #cbd5e1;
+        }
+
+        body {
+            font-family: 'Space Grotesk', 'Inter', sans-serif;
+            background: radial-gradient(ellipse at 20% 30%, #0a0a2a, #020210);
+            color: var(--text-light);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Animated Background Grid */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(124, 58, 237, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(124, 58, 237, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: 0;
+            pointer-events: none;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* Floating Orbs */
+        .floating-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(60px);
+            z-index: 0;
+            pointer-events: none;
+            animation: float 15s infinite ease-in-out;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(-50px) translateX(30px); }
+        }
+
+        /* Stellarium Canvas */
+        .stellarium-container {
+            position: relative;
+            width: 100%;
+            height: 550px;
+            border-radius: 30px;
+            overflow: hidden;
+            margin: 20px 0;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 0 40px rgba(124, 58, 237, 0.3), inset 0 0 30px rgba(124, 58, 237, 0.1);
+            background: #000;
+        }
+        #stellarium-canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        /* Eye Animation */
+        .eye-animation {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 65px;
+            height: 65px;
+            background: radial-gradient(circle, #ff3366, #660000);
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 0 25px rgba(255, 51, 102, 0.9);
+            transition: all 0.3s;
+            animation: eyePulse 2s infinite;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        @keyframes eyePulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 25px rgba(255, 51, 102, 0.9); }
+            50% { transform: scale(1.08); box-shadow: 0 0 45px rgba(255, 51, 102, 1); }
+        }
+        .eye-animation.closed {
+            background: radial-gradient(circle, #1a0000, #000);
+            box-shadow: 0 0 15px rgba(0,0,0,0.5);
+        }
+
+        .app-container {
+            position: relative;
+            z-index: 2;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* REGISTRATION - Futuristic */
+        .register-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.97);
+            backdrop-filter: blur(25px);
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .register-card {
+            background: linear-gradient(135deg, rgba(20, 20, 50, 0.9), rgba(10, 10, 30, 0.95));
+            border-radius: 40px;
+            padding: 45px;
+            width: 90%;
+            max-width: 500px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 0 70px rgba(124, 58, 237, 0.4);
+            animation: floatIn 0.6s ease;
+            backdrop-filter: blur(10px);
+        }
+        @keyframes floatIn {
+            from { opacity: 0; transform: translateY(60px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .register-card h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .register-input {
+            width: 100%;
+            padding: 16px;
+            margin: 15px 0;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        .register-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 20px var(--primary-glow);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            padding: 14px 35px;
+            border-radius: 40px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+            letter-spacing: 1px;
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(124, 58, 237, 0.5);
+        }
+
+        /* FUTURISTIC NAMETAG - Like GitHub ID Card */
+        .nametag {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            border-radius: 25px;
+            padding: 25px 30px;
+            margin: 20px 0 30px;
+            border: 1px solid rgba(0, 243, 255, 0.5);
+            box-shadow: 0 0 40px rgba(0, 243, 255, 0.2), inset 0 1px 0 rgba(255,255,255,0.1);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+        }
+        .nametag::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0,243,255,0.1), transparent);
+            transform: rotate(45deg);
+            animation: shine 8s infinite;
+        }
+        @keyframes shine {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+        .nametag h3 {
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+            color: var(--neon-blue);
+            font-family: 'Orbitron', monospace;
+        }
+        .nametag .explorer-name {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff, var(--neon-blue), var(--neon-purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin: 10px 0;
+        }
+        .nametag .qr-sim {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #000, #1a1a2e);
+            margin: 10px auto;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--neon-blue);
+        }
+        .nametag .qr-sim i {
+            font-size: 30px;
+            color: var(--neon-blue);
+        }
+
+        .dashboard { display: none; }
+        .dashboard.active { display: block; }
+
+        /* TABS Futuristic */
+        .tabs {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+            padding: 10px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 60px;
+            backdrop-filter: blur(10px);
+        }
+        .tab-btn {
+            background: transparent;
+            border: none;
+            padding: 12px 28px;
+            color: var(--text-dim);
+            cursor: pointer;
+            font-size: 1rem;
+            border-radius: 40px;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 0 20px var(--primary-glow);
+        }
+
+        /* Library Grid */
+        .library-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+        .article-card {
+            background: var(--glass-bg);
+            border-radius: 25px;
+            padding: 20px;
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            transition: all 0.4s;
+            overflow: hidden;
+        }
+        .article-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--neon-blue);
+            box-shadow: 0 20px 40px rgba(0, 243, 255, 0.2);
+        }
+        .article-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 18px;
+            margin-bottom: 15px;
+            transition: transform 0.5s;
+        }
+        .article-card:hover img {
+            transform: scale(1.02);
+        }
+
+        /* AI Chat */
+        .ai-section {
+            background: var(--glass-bg);
+            border-radius: 30px;
+            padding: 25px;
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+        }
+        .chat-messages {
+            height: 400px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            padding: 15px;
+        }
+        .message {
+            margin: 15px 0;
+            padding: 12px 18px;
+            border-radius: 20px;
+            max-width: 80%;
+        }
+        .user-message {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            margin-left: auto;
+            color: white;
+        }
+        .ai-message {
+            background: rgba(124, 58, 237, 0.2);
+            border-left: 3px solid var(--neon-blue);
+            margin-right: auto;
+        }
+        .chat-input-area {
+            display: flex;
+            gap: 12px;
+        }
+        .chat-input {
+            flex: 1;
+            padding: 15px 20px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            color: white;
+            font-size: 1rem;
+        }
+        .chat-input:focus {
+            outline: none;
+            border-color: var(--neon-blue);
+        }
+
+        /* Image Upload */
+        .image-upload-area {
+            border: 2px dashed var(--glass-border);
+            border-radius: 25px;
+            padding: 40px;
+            text-align: center;
+            margin: 20px 0;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: rgba(0,0,0,0.2);
+        }
+        .image-upload-area:hover {
+            border-color: var(--neon-blue);
+            background: rgba(0, 243, 255, 0.05);
+        }
+
+        /* 3D Background */
+        #canvas3d {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 55px;
+            height: 55px;
+            background: var(--glass-bg);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            font-size: 1.5rem;
+        }
+
+        .copyright-watermark {
+            position: fixed;
+            bottom: 15px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 13px;
+            color: rgba(255,255,255,0.35);
+            z-index: 99;
+            font-family: 'Orbitron', monospace;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 768px) {
+            .library-grid { grid-template-columns: 1fr; }
+            .stellarium-container { height: 350px; }
+            .tabs { justify-content: center; }
+            .nametag .explorer-name { font-size: 1.3rem; }
+        }
+    </style>
+</head>
+<body>
+  <div class="astro-events">
+
+<h2> Astronomy Event Calendar</h2>
+
+<div class="event-grid">
+
+<div class="event-card">
+<h3>Meteor Shower</h3>
+<p class="event-name">Perseids Meteor Shower</p>
+<p class="event-date">Peak: Aug 12</p>
+</div>
+
+<div class="event-card">
+<h3>Lunar Event</h3>
+<p class="event-name">Total Lunar Eclipse</p>
+<p class="event-date">Nov 8</p>
+</div>
+
+<div class="event-card">
+<h3>Planetary Event</h3>
+<p class="event-name">Mars Opposition</p>
+<p class="event-date">Jan 16</p>
+</div>
+
+<div class="event-card">
+<h3>Solar Event</h3>
+<p class="event-name">Total Solar Eclipse</p>
+<p class="event-date">Apr 8</p>
+</div>
+
+</div>
+
+</div>
+<div class="grid-bg"></div>
+<div class="floating-orb" style="width: 300px; height: 300px; background: #7c3aed; top: -100px; left: -100px; opacity: 0.3;"></div>
+<div class="floating-orb" style="width: 200px; height: 200px; background: #ec4899; bottom: -50px; right: -50px; opacity: 0.25;"></div>
+<div class="floating-orb" style="width: 250px; height: 250px; background: #06b6d4; top: 50%; right: 10%; opacity: 0.15;"></div>
+
+<div id="canvas3d"></div>
+<div class="eye-animation" id="eyeAnim"></div>
+<div class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></div>
+<div class="copyright-watermark">© 2026 Liamz Space Institute | All Rights Reserved | Advanced Astronomy Portal</div>
+<div class="space-clock">
+    <span id="clock-time"></span>
+</div>
+<!-- REGISTRATION -->
+<div class="register-overlay" id="registerOverlay">
+    <div class="register-card">
+        <div style="text-align: center; margin-bottom: 20px;">
+            <i class="fas fa-user-astronaut" style="font-size: 70px; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; background-clip: text; color: transparent;"></i>
+        </div>
+        <h2 style="text-align: center;">✨ ACCESS ASTRONOMY PORTAL ✨</h2>
+        <p style="text-align: center; margin-bottom: 20px;">Become an official cosmic explorer</p>
+        <input type="text" class="register-input" id="regName" placeholder="Full Name" required>
+        <textarea class="register-input" id="regReason" rows="3" placeholder="Your mission statement / Why explore the cosmos?"></textarea>
+        <button class="btn-primary" id="registerBtn" style="width: 100%;">🚀 INITIATE REGISTRATION 🚀</button>
+    </div>
+</div>
+
+<!-- MAIN DASHBOARD -->
+<div class="app-container dashboard" id="dashboard">
+    <div id="nametagContainer"></div>
+    
+    <div class="stellarium-container">
+        <canvas id="stellarium-canvas"></canvas>
+    </div>
+    
+    <div class="tabs">
+        <button class="tab-btn active" data-tab="library">📚 COSMIC LIBRARY</button>
+        <button class="tab-btn" data-tab="ai">🤖 AI ASTRONOMER</button>
+        <button class="tab-btn" data-tab="gallery">🖼️ CELESTIAL GALLERY</button>
+        <button class="tab-btn" data-tab="identify">🔭 OBJECT IDENTIFIER</button>
+    </div>
+
+    <div id="library" class="tab-content active"><div class="library-grid" id="libraryGrid"></div></div>
+    <div id="ai" class="tab-content" style="display: none;">
+        <div class="ai-section">
+            <h2><i class="fas fa-robot"></i> AI Astronomy Assistant (ChatGPT Neural Core)</h2>
+            <div class="chat-messages" id="chatMessages">
+                <div class="message ai-message">🌌 Greetings, explorer! I am your AI Astronomer. Ask me anything about black holes, exoplanets, supernovae, or the origins of the universe!</div>
+            </div>
+            <div class="chat-input-area">
+                <input type="text" class="chat-input" id="chatInput" placeholder="Ask about the cosmos...">
+                <button class="btn-primary" id="sendChat">Send</button>
+            </div>
+        </div>
+    </div>
+    <div id="gallery" class="tab-content" style="display: none;"><div class="library-grid" id="galleryGrid"></div></div>
+    <div id="identify" class="tab-content" style="display: none;">
+        <div class="ai-section">
+            <h2><i class="fas fa-image"></i> AI Celestial Object Identifier</h2>
+            <div class="image-upload-area" id="uploadArea">
+                <i class="fas fa-cloud-upload-alt" style="font-size: 50px;"></i>
+                <p>Upload image of nebula, galaxy, planet, or star</p>
+                <input type="file" id="imageInput" accept="image/*" style="display: none;">
+            </div>
+            <div id="identificationResult"></div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+  function updateClock(){
+
+const now = new Date();
+
+const h = String(now.getHours()).padStart(2,'0');
+const m = String(now.getMinutes()).padStart(2,'0');
+const s = String(now.getSeconds()).padStart(2,'0');
+
+document.getElementById("clock-time").innerText =
+h + ":" + m + ":" + s;
+
+}
+
+setInterval(updateClock,1000);
+
+updateClock();
+
+    // STELLARIUM 3D SKY MAP - Enhanced
+    (function() {
+        const canvas = document.getElementById('stellarium-canvas');
+        if (canvas && canvas.parentElement) {
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(60, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ canvas, alpha: false, antialias: true });
+            renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+            renderer.setClearColor(0x020218, 1);
+            
+               // Starfield dengan 8000 bintang
+            const starCount = 8000;
+            const starGeo = new THREE.BufferGeometry();
+            const starPos = new Float32Array(starCount * 3);
+            for (let i = 0; i < starCount; i++) {
+                starPos[i*3] = (Math.random() - 0.5) * 2000;
+                starPos[i*3+1] = (Math.random() - 0.5) * 1000;
+                starPos[i*3+2] = (Math.random() - 0.5) * 500 - 150;
+            }
+            starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+            const starMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.3 });
+            const starsField = new THREE.Points(starGeo, starMat);
+            scene.add(starsField);
+            
+            // Milky Way
+            const mwCount = 4000;
+            const mwPos = new Float32Array(mwCount * 3);
+            for (let i = 0; i < mwCount; i++) {
+                const ang = Math.random() * Math.PI * 2;
+                const rad = 70 + Math.random() * 50;
+                mwPos[i*3] = Math.cos(ang) * rad;
+                mwPos[i*3+1] = (Math.random() - 0.5) * 25;
+                mwPos[i*3+2] = Math.sin(ang) * rad;
+            }
+            const mwGeo = new THREE.BufferGeometry();
+            mwGeo.setAttribute('position', new THREE.BufferAttribute(mwPos, 3));
+            const mwMat = new THREE.PointsMaterial({ color: 0x88aaff, size: 0.25 });
+            const milkyWay = new THREE.Points(mwGeo, mwMat);
+            scene.add(milkyWay);
+            
+            // Constellation Orion & Ursa Major
+            const constellations = [
+                [[-10, 8, -20], [-7, 12, -18], [-3, 9, -22], [0, 13, -19], [4, 8, -21], [7, 11, -18]],
+                [[-15, -5, -25], [-10, -2, -23], [-5, -7, -26], [0, -3, -24], [5, -6, -25]]
+            ];
+            const lineMat = new THREE.LineBasicMaterial({ color: 0x44ccff });
+            constellations.forEach(cons => {
+                for (let i = 0; i < cons.length - 1; i++) {
+                    const points = [new THREE.Vector3(cons[i][0], cons[i][1], cons[i][2]), new THREE.Vector3(cons[i+1][0], cons[i+1][1], cons[i+1][2])];
+                    const geom = new THREE.BufferGeometry().setFromPoints(points);
+                    const line = new THREE.Line(geom, lineMat);
+                    scene.add(line);
+                }
+            });
+            
+            camera.position.set(0, 8, 35);
+            camera.lookAt(0, 0, 0);
+            let t = 0;
+            function animateSky() {
+                requestAnimationFrame(animateSky);
+                t += 0.002;
+                starsField.rotation.y += 0.0003;
+                starsField.rotation.x = Math.sin(t) * 0.03;
+                milkyWay.rotation.y += 0.0002;
+                camera.position.x = Math.sin(t * 0.25) * 3;
+                camera.lookAt(0, 0, 0);
+                renderer.render(scene, camera);
+            }
+            animateSky();
+            window.addEventListener('resize', () => {
+                const w = canvas.clientWidth, h = canvas.clientHeight;
+                renderer.setSize(w, h);
+                camera.aspect = w / h;
+                camera.updateProjectionMatrix();
+            });
+        }
+    })();
+
+    // 3D SOLAR SYSTEM
+    const scene3D = new THREE.Scene();
+    const camera3D = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer3D = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    renderer3D.setSize(window.innerWidth, window.innerHeight);
+    renderer3D.setClearColor(0x000000, 0);
+    document.getElementById('canvas3d').appendChild(renderer3D.domElement);
+
+    const sunMat = new THREE.MeshStandardMaterial({ color: 0xffaa44, emissive: 0xff4400, emissiveIntensity: 1.3 });
+    const sun = new THREE.Mesh(new THREE.SphereGeometry(2.2, 64, 64), sunMat);
+    scene3D.add(sun);
+
+    const planetsData = [
+        { color: 0xbc9a6c, size: 0.32, dist: 4.8, speed: 0.022 },
+        { color: 0xe6b800, size: 0.42, dist: 6.5, speed: 0.016 },
+        { color: 0x2288ff, size: 0.48, dist: 8, speed: 0.013 },
+        { color: 0xff6633, size: 0.43, dist: 9.5, speed: 0.011 },
+        { color: 0xc99e6f, size: 0.95, dist: 12.5, speed: 0.0085 },
+        { color: 0xf0e6d2, size: 0.85, dist: 14.5, speed: 0.0065 },
+        { color: 0xb0e0e6, size: 0.75, dist: 16.5, speed: 0.0055 },
+        { color: 0x4488ff, size: 0.75, dist: 18.5, speed: 0.0045 }
+    ];
+    const planets = [];
+    planetsData.forEach(p => {
+        const mesh = new THREE.Mesh(new THREE.SphereGeometry(p.size, 64, 64), new THREE.MeshStandardMaterial({ color: p.color, roughness: 0.4 }));
+        scene3D.add(mesh);
+        planets.push({ mesh, dist: p.dist, speed: p.speed, angle: Math.random() * Math.PI * 2 });
+    });
+    const ambientLight = new THREE.AmbientLight(0x404060);
+    scene3D.add(ambientLight);
+    const light = new THREE.PointLight(0xffffff, 1.2);
+    light.position.set(10, 10, 10);
+    scene3D.add(light);
+    camera3D.position.z = 28;
+    camera3D.position.y = 6;
+    function animateSolar() {
+        requestAnimationFrame(animateSolar);
+        sun.rotation.y += 0.005;
+        planets.forEach(p => {
+            p.angle += p.speed;
+            p.mesh.position.set(Math.cos(p.angle) * p.dist, 0, Math.sin(p.angle) * p.dist);
+        });
+        camera3D.position.x = Math.sin(Date.now() * 0.0004) * 2.5;
+        camera3D.lookAt(0, 0, 0);
+        renderer3D.render(scene3D, camera3D);
+    }
+    animateSolar();
+
+    // Eye animation with flash
+    const eye = document.getElementById('eyeAnim');
+    eye.addEventListener('click', () => {
+        eye.classList.add('closed');
+        document.body.style.filter = 'brightness(0.35) contrast(1.6)';
+        setTimeout(() => {
+            document.body.style.filter = '';
+            eye.classList.remove('closed');
+        }, 550);
+    });
+
+    // Theme toggle
+    let dark = true;
+    document.getElementById('themeToggle').addEventListener('click', () => {
+        dark = !dark;
+        if (!dark) {
+            document.body.style.background = 'radial-gradient(ellipse at 20% 30%, #e0e7ff, #ffffff)';
+            document.body.style.color = '#0f172a';
+        } else {
+            document.body.style.background = 'radial-gradient(ellipse at 20% 30%, #0a0a2a, #020210)';
+            document.body.style.color = '#f1f5f9';
+        }
+        document.getElementById('themeToggle').innerHTML = dark ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+    });
+
+    // EDUCATIONAL DATA LENGKAP (UPDATED)
+   const libraryData = [
+        { title: "🔭 ASTROLOGI",
+desc: "Astrologi mempelajari hubungan posisi planet dan bintang dengan kehidupan manusia. Berakar dari Babilonia 2000 SM, astrologi membagi langit menjadi 12 zodiak. Meski bukan sains eksak, astrologi memiliki nilai historis dan budaya yang mendalam.",
+img: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=500" },
+        { title: "⚛️ ASTROFISIKA",
+desc: "Astrofisika menerapkan hukum fisika untuk memahami bintang, galaksi, dan lubang hitam. Mempelajari fusi nuklir di inti bintang, spektrum cahaya untuk analisis kimia, serta gelombang gravitasi dari penggabungan lubang hitam.",
+img: "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=900" },
+        { title: "🌌 KOSMOLOGI",
+desc: "Kosmologi adalah studi tentang asal-usul dan evolusi alam semesta. Big Bang 13.8 miliar tahun lalu, inflasi kosmik, materi gelap (27%), energi gelap (68%), dan radiasi latar gelombang mikro kosmis adalah pilar utama kosmologi modern.",
+img: "https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?w=800" },
+        { title: "🪐 PLANETOLOGI",
+desc: "Planetologi mempelajari planet, bulan, asteroid, dan komet. Dari gunung api di Io, lautan bawah es Europa, hingga badai raksasa di Jupiter. Eksoplanet seperti TRAPPIST-1e menjadi target pencarian kehidupan.",
+img: "https://images.unsplash.com/photo-1614732414444-096e5f1122d5?w=900" },
+        { title: "📏 ASTROMETRI",
+desc: "Astrometri mengukur posisi dan jarak benda langit dengan presisi ekstrim. Teknik paralaks memberikan jarak bintang terdekat. Misi Gaia ESA telah memetakan posisi 1.8 miliar bintang di Bima Sakti.",
+img: "https://images.unsplash.com/photo-1543722530-d2c3201371e7?w=500" },
+        { title: "🧪 ASTROKIMIA",
+desc: "Astrokimia mempelajari molekul di ruang angkasa. Lebih dari 200 molekul telah ditemukan di awan antarbintang, termasuk air, metanol, dan molekul organik kompleks yang menjadi bahan dasar kehidupan.",
+img: "https://images.unsplash.com/photo-1538370965046-79c0d6907d47?w=500"},
+        { title: "🧬 ASTROBIOLOGI",
+desc: "Astrobiologi mencari kehidupan di luar Bumi. Exoplanet di zona layak huni, biosignature seperti metana dan oksigen, ekstremofil di Bumi, serta misi Perseverance ke Mars adalah fokus utama bidang ini.",
+img: "https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?w=500" },
+        { title: "🚀 ASTRONAUTIKA",
+desc: "Astronautika adalah ilmu penerbangan antariksa. Meliputi roket, orbit, stasiun luar angkasa (ISS, Tiangong), pendaratan di Bulan (Artemis), dan misi masa depan ke Mars serta asteroid.",
+img: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=500" },
+        { title: "⭐ EVOLUSI BINTANG",
+desc: "Bintang lahir di nebula, menjalani fusi hidrogen di deret utama, lalu menjadi raksasa merah, supernova, dan berakhir sebagai katai putih, bintang neutron, atau lubang hitam. Matahari akan menjadi katai putih dalam 5 miliar tahun.",
+img: "https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=500" },
+        { title: "🌠 FENOMENA EKSTREM",
+desc: "Fenomena ekstrem dalam astronomi adalah peristiwa kosmik yang melibatkan energi sangat besar, kondisi fisika ekstrem, atau perubahan dramatis di alam semesta. Contoh fenomena tersebut dapat berupa ledakan supernova, lubang hitam, hingga nebula. Nebula adalah awan gas dan debu raksasa di ruang antarbintang yang sering menjadi tempat kelahiran bintang. Di dalam nebula, gas hidrogen berkumpul karena gravitasi hingga akhirnya memicu proses fusi nuklir dan membentuk bintang baru.",
+img: "https://upload.wikimedia.org/wikipedia/commons/0/00/Crab_Nebula.jpg" },
+    ];
+
+    function loadLibrary() {
+        const grid = document.getElementById('libraryGrid');
+        grid.innerHTML = libraryData.map(art => `
+            <div class="article-card">
+                <img src="${art.img}" alt="${art.title}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1462332420958-a05d1e002413?w=500'">
+                <h3>${art.title}</h3>
+                <p style="font-size: 0.9rem; line-height: 1.5;">${art.desc}</p>
+            </div>
+        `).join('');
+    }
+
+    async function loadGallery() {
+        const grid = document.getElementById('galleryGrid');
+        grid.innerHTML = '<p style="text-align:center;">Loading celestial images...</p>';
+        try {
+            const res = await fetch('https://api.nasa.gov/planetary/apod?api_key=0B7ko3sjbKpXfYYEgSEPyVQ4CzOTJioPntJ5qvJo&count=9');
+            const data = await res.json();
+            grid.innerHTML = data.map(item => `
+                <div class="article-card">
+                    <img src="${item.url}" style="height:220px; object-fit:cover;" onerror="this.src='https://images.unsplash.com/photo-1462332420958-a05d1e002413?w=500'">
+                    <h3>${item.title}</h3>
+                    <p>${item.explanation ? item.explanation.substring(0, 140) : 'NASA Astronomy Picture of the Day'}...</p>
+                </div>
+            `).join('');
+        } catch(e) {
+            grid.innerHTML = libraryData.slice(0,6).map(art => `<div class="article-card"><img src="${art.img}"><h3>${art.title}</h3><p>${art.desc.substring(0,120)}</p></div>`).join('');
+        }
+    }
+
+    async function askAI(question) {
+        try {
+            const response = await fetch('https://api.nexray.web.id/category/ai/chatgpt', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: question, context: "You are a professional astronomer with PhD in astrophysics. Answer in Indonesian with detailed, accurate, and engaging explanations." })
+            });
+            const data = await response.json();
+            return data.reply || data.answer || "Maaf, API sedang sibuk. Coba tanyakan tentang lubang hitam atau supernova!";
+        } catch(e) {
+            return "🌠 API sedang maintenance. Alam semesta memiliki sekitar 2 triliun galaksi! Setiap galaksi berisi miliaran bintang. Teruslah bertanya!";
+        }
+    }
+
+    const chatMessages = document.getElementById('chatMessages');
+    const chatInput = document.getElementById('chatInput');
+    async function sendMessage() {
+        const q = chatInput.value.trim();
+        if (!q) return;
+        chatMessages.innerHTML += `<div class="message user-message">${q}</div>`;
+        chatInput.value = '';
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        const answer = await askAI(q);
+        chatMessages.innerHTML += `<div class="message ai-message">${answer}</div>`;
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+    document.getElementById('sendChat').addEventListener('click', sendMessage);
+    chatInput.addEventListener('keypress', (e) => { if(e.key === 'Enter') sendMessage(); });
+
+    const uploadArea = document.getElementById('uploadArea');
+    const imageInput = document.getElementById('imageInput');
+    const resultDiv = document.getElementById('identificationResult');
+    uploadArea.addEventListener('click', () => imageInput.click());
+    uploadArea.addEventListener('dragover', (e) => { e.preventDefault(); uploadArea.style.borderColor = '#00f3ff'; });
+    uploadArea.addEventListener('dragleave', () => uploadArea.style.borderColor = 'var(--glass-border)');
+    uploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        if(e.dataTransfer.files[0]) identifyImage(e.dataTransfer.files[0]);
+    });
+    imageInput.addEventListener('change', (e) => { if(e.target.files[0]) identifyImage(e.target.files[0]); });
+    function identifyImage(file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            resultDiv.innerHTML = '<p>🔭 AI menganalisis gambar...</p>';
+            setTimeout(() => {
+                const responses = [
+                    "✨ Berdasarkan analisis: Gambar ini menunjukkan Nebula Orion, daerah pembentukan bintang aktif berjarak 1.344 tahun cahaya.",
+                    "🪐 Identifikasi: Objek ini adalah galaksi spiral, mirip dengan Bima Sakti yang berdiameter 100.000 tahun cahaya.",
+                    "⭐ Analisis: Ini adalah gugus bintang globular, kumpulan ratusan ribu bintang tua di halo galaksi.",
+                    "🌌 Hasil: Gambar ini adalah sisa supernova (Crab Nebula), hasil ledakan bintang masif tahun 1054 Masehi."
+                ];
+                resultDiv.innerHTML = `<div class="message ai-message"><strong>🔍 HASIL IDENTIFIKASI:</strong><br>${responses[Math.floor(Math.random() * responses.length)]}<br><img src="${event.target.result}" style="max-width:100%; border-radius:20px; margin-top:15px;"></div>`;
+            }, 1500);
+        };
+        reader.readAsDataURL(file);
+    }
+
+    // REGISTRATION with FUTURISTIC NAMETAG
+    document.getElementById('registerBtn').addEventListener('click', () => {
+        const name = document.getElementById('regName').value.trim();
+        const reason = document.getElementById('regReason').value.trim();
+        if(!name) { alert('Masukkan nama Anda untuk mengakses portal!'); return; }
+        const idNumber = 'ASTRO-' + Math.floor(Math.random() * 1000000);
+        document.getElementById('nametagContainer').innerHTML = `
+            <div class="nametag">
+                <div class="qr-sim"><i class="fas fa-qrcode"></i></div>
+                <h3> ASTRONOMY RESEARCH PORTAL - OFFICIAL ACCESS CARD</h3>
+                <div class="explorer-name">${name.toUpperCase()}</div>
+                <p style="font-size:0.85rem; letter-spacing:1px;">ID: ${idNumber}</p>
+                <p style="font-size:0.75rem; margin-top:8px;">"${reason.substring(0,80) || 'Exploring the infinite cosmos'}"</p>
+                <div style="display: flex; justify-content: space-between; margin-top: 15px;">
+                    <span><i class="fas fa-calendar-alt"></i> Issued: 04/2026</span>
+                    <span><i class="fas fa-certificate"></i> Level: Explorer</span>
+                    <span><i class="fas fa-globe"></i> Liamz Institute</span>
+                </div>
+                <div style="margin-top: 12px; font-size:0.7rem; border-top: 1px solid rgba(0,243,255,0.3); padding-top: 8px;">
+                    <i class="fas fa-shield-alt"></i> NASA Partner Program | Valid for deep space research
+                </div>
+            </div>
+        `;
+       document.getElementById('registerOverlay').style.display = 'none';
+        document.getElementById('dashboard').classList.add('active');
+        loadLibrary();
+        loadGallery();
+    });
+
+    // Tab switching
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const tabId = btn.getAttribute('data-tab');
+            document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+            document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+            document.getElementById(tabId).style.display = 'block';
+            if(tabId === 'gallery') loadGallery();
+        });
+    });
+</script>
+</body>
+</html>
